@@ -4,18 +4,19 @@ std::string name = "add userName";
 std::string pass = "add password";
 std::string c_k = "add Consumer key";
 std::string c_s = "add Consumer secret";
-std::string t_k = "add Access token";
-std::string t_s = "add Access token secret";
-
+std::string data;
 //--------------------------------------------------------------
 void testApp::setup(){
     
-    twitt.setup(name,pass,c_k,c_s,t_k,t_s);
-    twitt.getFriendID();
+    twitt.setup(name, pass, c_k, c_s);
+    twitt.getPublicTimeline();
+    //twitt.getFriendID(std::string("id"));
     //twitt.getTrend();
-    //twitt.getPublicTimeline();
     //twitt.getUserTimeline();
     //twitt.searchString(std::string("test"));
+    data = twitt.getData();
+    cout<<"data"<<endl;
+    cout<<data<<endl;
 }
 
 //--------------------------------------------------------------

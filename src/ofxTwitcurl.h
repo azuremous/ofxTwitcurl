@@ -13,41 +13,70 @@
 
 class ofxTwitcurl{
     
+private:
+    
+    std::string replyMsg;
+    
 protected:
     
     twitCurl twitterObj;
-    std::string replyMsg;
-    std::string tmpStr;
     
 public:
     
     void setup(std::string userName, 
-               std::string passWord, 
+               std::string passWord,
                std::string consumerKey, 
-               std::string consumerSecret, 
-               std::string tokenKey, 
-               std::string tokenSecret)
+               std::string consumerSecret
+               )
+    {
+        setUser(userName, passWord);
+        setConsumer(consumerKey, consumerSecret);
+        requestToken();
+    }
+    
+    void setUser(std::string userName, std::string passWord)
     {
         
         twitterObj.setTwitterUsername( userName );
         twitterObj.setTwitterPassword( passWord );
+        
+    }
+    
+    void setConsumer(std::string consumerKey, std::string consumerSecret)
+    {
+        
         twitterObj.getOAuth().setConsumerKey(consumerKey);
         twitterObj.getOAuth().setConsumerSecret(consumerSecret);
+        
+    }
+    
+    void requestToken(){
+        
+        std::string authUrl;
+
+        twitterObj.oAuthRequestToken(authUrl);
+        twitterObj.oAuthHandlePIN( authUrl );
+
+        twitterObj.oAuthAccessToken();
+
+    }
+    
+    void setToken(std::string tokenKey, std::string tokenSecret)
+    {
+        
         twitterObj.getOAuth().setOAuthTokenKey(tokenKey);
         twitterObj.getOAuth().setOAuthTokenSecret(tokenSecret);
         
     }
     
-    void getFriendID(){
+    void getFriendID(std::string userInfo){
         
         /* Get friend ids */
         replyMsg = "";
-        printf( "\nGetting friend ids\n" );
-        tmpStr = "techcrunch";
-        if( twitterObj.friendsIdsGet( tmpStr, false ) )
+        if( twitterObj.friendsIdsGet( userInfo, false ) )
         {
             twitterObj.getLastWebResponse( replyMsg );
-            printf( "\ntwitterClient:: twitCurl::friendsIdsGet web response:\n%s\n", replyMsg.c_str() );
+            //printf( "\ntwitterClient:: twitCurl::friendsIdsGet web response:\n%s\n", replyMsg.c_str() );
         }
         else
         {
@@ -65,7 +94,7 @@ public:
         if( twitterObj.statusUpdate( newStatus ) )
         {
             twitterObj.getLastWebResponse( replyMsg );
-            printf( "\ntwitterClient:: twitCurl::statusUpdate web response:\n%s\n", replyMsg.c_str() );
+            //printf( "\ntwitterClient:: twitCurl::statusUpdate web response:\n%s\n", replyMsg.c_str() );
         }
         else
         {
@@ -84,7 +113,7 @@ public:
         if( twitterObj.search( searchWord ) )
         {
             twitterObj.getLastWebResponse( replyMsg );
-            printf( "\ntwitterClient:: twitCurl::search web response:\n%s\n", replyMsg.c_str() );
+            //printf( "\ntwitterClient:: twitCurl::search web response:\n%s\n", replyMsg.c_str() );
         }
         else
         {
@@ -92,6 +121,23 @@ public:
             printf( "\ntwitterClient:: twitCurl::search error:\n%s\n", replyMsg.c_str() );
         }
         
+    }
+    
+    void getPublicTimeline(){
+        
+        /* Get public timeline */
+        replyMsg = "";
+        printf( "\nGetting public timeline\n" );
+        if( twitterObj.timelinePublicGet() )
+        {
+            twitterObj.getLastWebResponse( replyMsg );
+            //printf( "\ntwitterClient:: twitCurl::timelinePublicGet web response:\n%s\n", replyMsg.c_str() );
+        }
+        else
+        {
+            twitterObj.getLastCurlError( replyMsg );
+            printf( "\ntwitterClient:: twitCurl::timelinePublicGet error:\n%s\n", replyMsg.c_str() );
+        }
     }
     
     void getUserTimeline(){
@@ -102,7 +148,7 @@ public:
         if( twitterObj.timelineUserGet( false, false, 0 ) )
         {
             twitterObj.getLastWebResponse( replyMsg );
-            printf( "\ntwitterClient:: twitCurl::timelineUserGet web response:\n%s\n", replyMsg.c_str() );
+            //printf( "\ntwitterClient:: twitCurl::timelineUserGet web response:\n%s\n", replyMsg.c_str() );
         }
         else
         {
@@ -119,29 +165,12 @@ public:
         if( twitterObj.statusDestroyById( statusMsg ) )
         {
             twitterObj.getLastWebResponse( replyMsg );
-            printf( "\ntwitterClient:: twitCurl::statusDestroyById web response:\n%s\n", replyMsg.c_str() );
+            //printf( "\ntwitterClient:: twitCurl::statusDestroyById web response:\n%s\n", replyMsg.c_str() );
         }
         else
         {
             twitterObj.getLastCurlError( replyMsg );
             printf( "\ntwitterClient:: twitCurl::statusDestroyById error:\n%s\n", replyMsg.c_str() );
-        }
-    }
-    
-    void getPublicTimeline(){
-        
-        /* Get public timeline */
-        replyMsg = "";
-        printf( "\nGetting public timeline\n" );
-        if( twitterObj.timelinePublicGet() )
-        {
-            twitterObj.getLastWebResponse( replyMsg );
-            printf( "\ntwitterClient:: twitCurl::timelinePublicGet web response:\n%s\n", replyMsg.c_str() );
-        }
-        else
-        {
-            twitterObj.getLastCurlError( replyMsg );
-            printf( "\ntwitterClient:: twitCurl::timelinePublicGet error:\n%s\n", replyMsg.c_str() );
         }
     }
     
@@ -151,13 +180,18 @@ public:
         if( twitterObj.trendsDailyGet() )
         {
             twitterObj.getLastWebResponse( replyMsg );
-            printf( "\ntwitterClient:: twitCurl::trendsDailyGet web response:\n%s\n", replyMsg.c_str() );
+            //printf( "\ntwitterClient:: twitCurl::trendsDailyGet web response:\n%s\n", replyMsg.c_str() );
         }
         else
         {
             twitterObj.getLastCurlError( replyMsg );
             printf( "\ntwitterClient:: twitCurl::trendsDailyGet error:\n%s\n", replyMsg.c_str() );
         }
+    }
+    
+    std::string getData() const {
+        
+        return replyMsg;
     }
     
 };
