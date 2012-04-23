@@ -69,6 +69,54 @@ public:
         
     }
     
+    //get function
+    
+    void getDirectMessage(){
+        
+        replyMsg = "";
+        if (twitterObj.directMessageGet()) {
+            twitterObj.getLastWebResponse( replyMsg );
+        }else{
+            twitterObj.getLastCurlError( replyMsg );
+            printf( "\ntwitterClient:: twitCurl::friendsIdsGet error:\n%s\n", replyMsg.c_str() );
+        }
+        
+    }
+    
+    void getDirectMessageSend(){
+        
+        replyMsg = "";
+        if (twitterObj.directMessageGetSent()) {
+            twitterObj.getLastWebResponse( replyMsg );
+        }else{
+            twitterObj.getLastCurlError( replyMsg );
+            printf( "\ntwitterClient:: twitCurl::friendsIdsGet error:\n%s\n", replyMsg.c_str() );
+        }
+    }
+    
+    void getMention(std::string sinceId){
+        
+        replyMsg = "";
+        if (twitterObj.mentionsGet(sinceId)) {
+            twitterObj.getLastWebResponse( replyMsg );
+        }else{
+            twitterObj.getLastCurlError( replyMsg );
+            printf( "\ntwitterClient:: twitCurl::friendsIdsGet error:\n%s\n", replyMsg.c_str() );
+        }
+        
+    }
+    
+    void getUser(std::string userInfo){
+        
+        replyMsg = "";
+        if (twitterObj.userGet(userInfo)) {
+            twitterObj.getLastWebResponse( replyMsg );
+        }else{
+            twitterObj.getLastCurlError( replyMsg );
+            printf( "\ntwitterClient:: twitCurl::friendsIdsGet error:\n%s\n", replyMsg.c_str() );
+        }
+    }
+    
     void getFriendID(std::string userInfo){
         
         /* Get friend ids */
@@ -84,6 +132,62 @@ public:
             printf( "\ntwitterClient:: twitCurl::friendsIdsGet error:\n%s\n", replyMsg.c_str() );
         }
         
+    }
+    
+    void getFrined(){
+        
+        replyMsg = "";
+        if (twitterObj.friendsGet()) {
+            twitterObj.getLastWebResponse( replyMsg );
+        }else{
+            twitterObj.getLastCurlError( replyMsg );
+            printf( "\ntwitterClient:: twitCurl::friendsIdsGet error:\n%s\n", replyMsg.c_str() );
+        }
+    }
+    
+    void getFollowers(){
+        
+        replyMsg = "";
+        if (twitterObj.followersGet()) {
+            twitterObj.getLastWebResponse( replyMsg );
+        }else{
+            twitterObj.getLastCurlError( replyMsg );
+            printf( "\ntwitterClient:: twitCurl::friendsIdsGet error:\n%s\n", replyMsg.c_str() );
+        }
+    }
+    
+    void createFriendship(std::string userInfo){
+        
+        replyMsg = "";
+        if (twitterObj.friendshipCreate(userInfo)) {
+            twitterObj.getLastWebResponse(replyMsg);
+        }else {
+            twitterObj.getLastCurlError( replyMsg );
+            printf( "\ntwitterClient:: twitCurl::friendsIdsGet error:\n%s\n", replyMsg.c_str() );
+        }
+        
+    }
+    
+    void destroyFriendship(std::string userInfo){
+        
+        replyMsg = "";
+        if (twitterObj.friendshipDestroy(userInfo)) {
+            twitterObj.getLastWebResponse(replyMsg);
+        }else {
+            twitterObj.getLastCurlError( replyMsg );
+            printf( "\ntwitterClient:: twitCurl::friendsIdsGet error:\n%s\n", replyMsg.c_str() );
+        }
+    }
+    
+    void showFriendship(std::string userInfo){
+        
+        replyMsg = "";
+        if (twitterObj.friendshipShow(userInfo)) {
+            twitterObj.getLastWebResponse(replyMsg);
+        }else {
+            twitterObj.getLastCurlError( replyMsg );
+            printf( "\ntwitterClient:: twitCurl::friendsIdsGet error:\n%s\n", replyMsg.c_str() );
+        }
     }
     
     void postNewStatus(std::string newStatus){
@@ -104,7 +208,45 @@ public:
         
     }
     
-    void searchString(std::string searchWord){
+    void destroyStatusMessage(std::string statusMsg){
+        
+        /* Destroy a status message */
+        replyMsg = "";
+        if( twitterObj.statusDestroyById( statusMsg ) )
+        {
+            twitterObj.getLastWebResponse( replyMsg );
+            //printf( "\ntwitterClient:: twitCurl::statusDestroyById web response:\n%s\n", replyMsg.c_str() );
+        }
+        else
+        {
+            twitterObj.getLastCurlError( replyMsg );
+            printf( "\ntwitterClient:: twitCurl::statusDestroyById error:\n%s\n", replyMsg.c_str() );
+        }
+    }
+    
+    void sendDirectMessage(std::string userInfo, std::string msg){
+        
+        replyMsg = "";
+        if (twitterObj.directMessageSend(userInfo,msg, false)) {
+            twitterObj.getLastWebResponse( replyMsg );
+        }else{
+            twitterObj.getLastCurlError( replyMsg );
+            printf( "\ntwitterClient:: twitCurl::friendsIdsGet error:\n%s\n", replyMsg.c_str() );
+        }
+    }
+    
+    void destroyDirectMessageById(std::string msgId){
+        
+        replyMsg = "";
+        if (twitterObj.directMessageDestroyById(msgId)) {
+            twitterObj.getLastWebResponse( replyMsg );
+        }else{
+            twitterObj.getLastCurlError( replyMsg );
+            printf( "\ntwitterClient:: twitCurl::friendsIdsGet error:\n%s\n", replyMsg.c_str() );
+        }
+    }
+    
+    void search(std::string searchWord){
         
         //you can use ofxtwitter also
         /* Search a string */
@@ -156,22 +298,6 @@ public:
             printf( "\ntwitterClient:: twitCurl::timelineUserGet error:\n%s\n", replyMsg.c_str() );
         }
         
-    }
-    
-    void destroyStatusMessage(std::string statusMsg){
-        
-        /* Destroy a status message */
-        replyMsg = "";
-        if( twitterObj.statusDestroyById( statusMsg ) )
-        {
-            twitterObj.getLastWebResponse( replyMsg );
-            //printf( "\ntwitterClient:: twitCurl::statusDestroyById web response:\n%s\n", replyMsg.c_str() );
-        }
-        else
-        {
-            twitterObj.getLastCurlError( replyMsg );
-            printf( "\ntwitterClient:: twitCurl::statusDestroyById error:\n%s\n", replyMsg.c_str() );
-        }
     }
     
     void getTrend(){
